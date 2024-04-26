@@ -53,14 +53,14 @@ STATE_LIST = ['AL', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA', 'ID', 'IL', 
 # Metric Units for plot labels
 # $\mathregular{km^3}$/year
 FLOW_METRIC_UNITS = {
-    'annual_hmf': 'Average HMF ($\mathregular{km^3}$/year)', 
+    'annual_hmf': 'Average Annual HMF ($\mathregular{km^3}$/year)', 
     'event_duration': 'Average Days per HMF Event', 
     'annual_duration': 'Average HMF Days per Year', 
-    'event_hmf': 'Average HMF ($\mathregular{km^3}$/event)', 
+    'event_hmf': 'Average Event HMF ($\mathregular{km^3}$/event)', 
     'timing': 'Day of Hydrologic Year', 
-    'six_mo_hmf': 'Average HMF ($\mathregular{km^3}$/6 months)', 
-    'three_mo_hmf': 'Average HMF ($\mathregular{km^3}$/3 months)', 
-    'inter_annual%': 'Annual Freqency of Events', 
+    'six_mo_hmf': 'Average Six-Month HMF ($\mathregular{km^3}$/6 months)', 
+    'three_mo_hmf': 'Average Three-Month HMF ($\mathregular{km^3}$/3 months)', 
+    'inter_annual%': 'Inter-Annual Freqency of Events', 
     'intra_annual': 'Average Events per Year',
     'threshold': 'HMF Threshold (cfs)'
 }
