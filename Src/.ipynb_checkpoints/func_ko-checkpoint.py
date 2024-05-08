@@ -414,6 +414,11 @@ def plot_lower_48(ax: plt.Axes, crs: int=4269):
 #     ax.margins(0, tight=True)
 #     ax.set_axis_off()
 #     cx.add_basemap(ax, crs=crs, source=source, zoom=zoom)
+
+def plot_stream_network(stream_network_shapefile, ax: plt.Axes, crs: int=4269, color: str='blue', linewidth: float=0.75, alpha: float=0.30, zorder: int=1):
+    """Plots a nationwide stream network"""
+    stream_network = stream_network_shapefile.to_crs(crs)
+    stream_network.plot(ax=ax, color=color, linewidth=linewidth, alpha=alpha, zorder=zorder)    
     
 def convert_geometry(df: pd.DataFrame):
     """Converts 'dec_lat/long_va' columns to geopandas dataframe"""
@@ -480,3 +485,13 @@ def plot_huc4(ax, codes: list=[], crs: int=4269, edgecolor: str='royalblue', fac
                         shapefile = gpd.read_file(shapefile_path)
                         shapefile = shapefile.to_crs(epsg=crs)
                         shapefile.plot(ax=ax, edgecolor=edgecolor, facecolor=facecolor, alpha=alpha, linewidth=linewidth)
+                        
+def set_plot_bounds(shapefile, padding: float=3.0):
+    """Sets the plot bounds for single aquifer plotting"""
+    xmin, ymin, xmax, ymax = shapefile.total_bounds
+    padding = padding
+    xmin -= padding
+    ymin -= padding
+    xmax += padding
+    ymax += padding
+    return xmin, xmax, ymin, ymax 
