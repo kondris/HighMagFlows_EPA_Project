@@ -22,6 +22,7 @@ from itertools import chain
 SERVICE = 'dv'
 STATE_CODE = 'CA'
 PARAM_CODE = '00060'
+TIDAL_CODE = '72137'
 DEFAULT_START = '1900-10-01'
 DEFAULT_END = '2020-09-30'
 
@@ -68,6 +69,31 @@ FLOW_METRIC_UNITS = {
 #--------------------------------------#
 #-------# CALCULATION FUNCTIONS #------#
 #--------------------------------------#
+
+def merge_tidal(df_combined):
+    """This function merges, if necessary, tidal data with streamflow data returning a dataframe
+       with only the necessary columns for analysis. If no data is present, an empty dataframe is returned."""
+    keep_cols = ['datetime', '00060_Mean', 'site_no']
+    
+    # If we have both stream and tidal data, merge them, prioritizing tidal data, and rename the column to '00060_Mean'
+    if '72137_Mean' in df_combined.columns and '00060_Mean' in df_combined.columns:
+        df_combined['00060_Mean'] = df_combined['72137_Mean'].combine_first(df_combined['00060_Mean'])
+        df_combined = df_combined.drop(columns=[col for col in df_combined.columns if col not in keep_cols])
+        return df_combined
+    
+    # If we only have stream data use it as is, drop any unnecessary columns
+    if '00060_Mean' in df_combined.columns:
+        df_combined = df_combined.drop(columns=[col for col in df_combined.columns if col not in keep_cols])
+        return df_combined
+    
+    # If we only have tidal data we'll rename it to stream data and use it as is
+    if '72137_Mean' in df_combined.columns:
+        df_combined.rename(columns={'72137_Mean': '00060_Mean'}, inplace=True)
+        df_combined = df_combined.drop(columns=[col for col in df_combined.columns if col not in keep_cols])
+        return df_combined
+    
+    # Catch-all
+    return df_combined
 
 def validate(df: pd.DataFrame, start: datetime, end: datetime):
     """Returns the % amount of data missing from the analyzed range"""
