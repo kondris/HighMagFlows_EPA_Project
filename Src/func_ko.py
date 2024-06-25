@@ -11,7 +11,7 @@ import geopandas as gpd
 from shapely.geometry import Point
 import matplotlib.colors as mcolors
 
-from datetime import datetime
+from datetime import datetime, timedelta
 from itertools import chain
 
 #--------------------------#
@@ -293,17 +293,16 @@ def calc_timing(df: pd.DataFrame):
     """Calculates the average numerical day per hydrologic year that HMF reaches the center of mass threshold"""
     df = df.reset_index()
     
-    df['datetime'] = df['datetime'] + pd.DateOffset(months=-9)
-    
+    df['datetime'] = df['datetime'] + pd.DateOffset(months=-9)    
     df['year'] = df['datetime'].dt.year
     df['day'] = df['datetime'].dt.dayofyear
     df['cumsum'] = df.groupby('year')['00060_Mean'].cumsum()
     df['t_sum'] = df.groupby('year')['00060_Mean'].transform('sum')
 
     com_series = df[df['cumsum'] >= df['t_sum'] / 2].groupby('year')['day'].first()
-    timing = com_series.mean()    
-
-    return timing
+    timing = com_series.mean() 
+    
+    return timing, com_series
     
 def convert_cubic_ft_hm(value: float):
     """Convert ft^3 to km^3"""
