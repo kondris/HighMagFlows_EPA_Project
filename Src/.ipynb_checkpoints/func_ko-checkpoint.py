@@ -7,7 +7,7 @@ import calendar
 import pymannkendall as mk
 import matplotlib.pyplot as plt
 import geopandas as gpd
-#import contextily as cx
+import contextily as cx
 from shapely.geometry import Point
 import matplotlib.colors as mcolors
 
@@ -63,7 +63,8 @@ FLOW_METRIC_UNITS = {
     'three_mo_hmf': 'Average Three-Month HMF ($\mathregular{km^3}$/3 months)', 
     'inter_annual%': 'Inter-Annual Freqency of Events', 
     'intra_annual': 'Average Events per Year',
-    'threshold': 'HMF Threshold (cfs)'
+    'threshold': 'HMF Threshold (cfs)',
+    'pct_hmf': 'HMF to Total Streamflow (%)'
 }
 
 #--------------------------------------#
@@ -428,17 +429,17 @@ def single_site_report(df_single_site: pd.DataFrame):
 #-------# PLOTTING FUNCTIONS #------#
 #-----------------------------------#
 
-def plot_lower_48(ax: plt.Axes, crs: int=4269):
+def plot_lower_48(ax: plt.Axes, crs: int=4269, facecolor: str='grey', edgecolor: str='darkgrey', linewidth: float=0.75, alpha: float=1.0, zorder: int=1):
     """Plots a simple basemap of the lower 48 with state boundaries"""
     lower48 = gpd.read_file('ShapeFiles/Lower48/lower48.shp')        
-    lower48 = lower48.to_crs(epsg=crs)
-    lower48.plot(ax=ax, edgecolor='black', facecolor='none', linewidth=1.0)   
+    lower48 = lower48.to_crs(crs)
+    lower48.plot(ax=ax, edgecolor=edgecolor, facecolor=facecolor, linewidth=linewidth, alpha=alpha, zorder=zorder) 
     
-# def plot_basemap(ax: plt.Axes, crs: int=4269, source: cx.providers=cx.providers.OpenStreetMap.Mapnik, zoom: int=7):
-#     """Plots a contexily basemap"""
-#     ax.margins(0, tight=True)
-#     ax.set_axis_off()
-#     cx.add_basemap(ax, crs=crs, source=source, zoom=zoom)
+def plot_basemap(ax: plt.Axes, crs: int=4269, source: cx.providers=cx.providers.OpenStreetMap.Mapnik, zoom: int=7):
+    """Plots a contexily basemap"""
+    ax.margins(0, tight=True)
+    ax.set_axis_off()
+    cx.add_basemap(ax, crs=crs, source=source, zoom=zoom)
 
 def plot_stream_network(stream_network_shapefile, ax: plt.Axes, crs: int=4269, color: str='blue', linewidth: float=0.75, alpha: float=0.30, zorder: int=1):
     """Plots a nationwide stream network"""
