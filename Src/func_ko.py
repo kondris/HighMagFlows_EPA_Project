@@ -7,7 +7,7 @@ import calendar
 import pymannkendall as mk
 import matplotlib.pyplot as plt
 import geopandas as gpd
-import contextily as cx
+#import contextily as cx
 from shapely.geometry import Point
 import matplotlib.colors as mcolors
 
@@ -435,11 +435,11 @@ def plot_lower_48(ax: plt.Axes, crs: int=4269, facecolor: str='grey', edgecolor:
     lower48 = lower48.to_crs(crs)
     lower48.plot(ax=ax, edgecolor=edgecolor, facecolor=facecolor, linewidth=linewidth, alpha=alpha, zorder=zorder) 
     
-def plot_basemap(ax: plt.Axes, crs: int=4269, source: cx.providers=cx.providers.OpenStreetMap.Mapnik, zoom: int=7):
-    """Plots a contexily basemap"""
-    ax.margins(0, tight=True)
-    ax.set_axis_off()
-    cx.add_basemap(ax, crs=crs, source=source, zoom=zoom)
+# def plot_basemap(ax: plt.Axes, crs: int=4269, source: cx.providers=cx.providers.OpenStreetMap.Mapnik, zoom: int=7):
+#     """Plots a contexily basemap"""
+#     ax.margins(0, tight=True)
+#     ax.set_axis_off()
+#     cx.add_basemap(ax, crs=crs, source=source, zoom=zoom)
 
 def plot_stream_network(stream_network_shapefile, ax: plt.Axes, crs: int=4269, color: str='blue', linewidth: float=0.75, alpha: float=0.30, zorder: int=1):
     """Plots a nationwide stream network"""
